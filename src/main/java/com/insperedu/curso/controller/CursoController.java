@@ -29,5 +29,9 @@ public class CursoController {
         return cursoService.listar(nome);
     }
 
-
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletar(@PathVariable Long id) {
+        cursoService.deletar(id);
+    }
 }
