@@ -86,7 +86,33 @@ public class CursoServiceTests {
 		Assertions.assertEquals("Spring Boot", response.get(0).getNome());
 	}
 
+	@Test
+	public void test_shouldDeleteCurso(){
+		Curso curso = new Curso();
 
+		curso.setId(1L);
+		curso.setNome("Spring Boot");
+		curso.setDeletado(false);
+
+		Mockito.when(cursoRepository.findById(1L)).thenReturn(Optional.of(curso));
+
+		cursoService.deletar(curso.getId());
+
+		Assertions.assertTrue(curso.isDeletado());
+
+		Mockito.verify(cursoRepository).save(curso);
+
+	}
+
+	@Test
+	public void test_shouldThrowWhenCursoDoesntExist(){
+		Mockito.when(cursoRepository.findById(99L)).thenReturn(Optional.empty());
+
+		Assertions.assertThrows(
+				RuntimeException.class,
+				() -> cursoService.deletar(99L)
+		);
+	}
 
 
 }

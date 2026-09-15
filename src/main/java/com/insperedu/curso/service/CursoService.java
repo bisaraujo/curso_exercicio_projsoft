@@ -27,5 +27,9 @@ public class CursoService {
         return cursoRepository.findByNomeStartingWithAndDeletadoFalse(nome);
     }
 
-
+    public void deletar(Long id){
+        Curso curso = cursoRepository.findById(id).orElse(null);
+        curso.setDeletado(true);
+        cursoRepository.save(curso);
+    }
 }

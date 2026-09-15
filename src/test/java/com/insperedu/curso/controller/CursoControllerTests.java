@@ -101,6 +101,28 @@ public class CursoControllerTests {
         Assertions.assertEquals("Spring Boot", response[0].getNome());
         Assertions.assertFalse(response[0].isDeletado());
     }
+    @Test
+    public void test_shouldDeleteCurso() throws Exception {
+
+        Curso curso = new Curso();
+        curso.setNome("Spring Boot");
+        curso.setDescricao("Curso de Spring Boot");
+        curso.setDeletado(false);
+
+        curso = cursoRepository.save(curso);
+
+        mockMvc.perform(
+                        delete("/cursos/{id}", curso.getId())
+                )
+                .andExpect(status().isNoContent());
+
+        Curso cursoDeletado = cursoRepository
+                .findById(curso.getId())
+                .orElseThrow();
+
+        Assertions.assertTrue(cursoDeletado.isDeletado());
+    }
+
 
 
 
